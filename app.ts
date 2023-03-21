@@ -15,7 +15,11 @@ app.get('/users', async (_, res) => {
 
 // POSTS
 app.get('/posts', async (_, res) => {
-    const posts = await prisma.user.findMany();
+    const posts = await prisma.post.findMany({
+        include: {
+            tags: true,
+        }
+    });
     res.json(posts);
 });
 
@@ -24,6 +28,9 @@ app.get('/posts/:id', async (req, res) => {
 
     const post = await prisma.post.findUnique({
       where: { id: Number(id) },
+      include: {
+        tags: true,
+      }
     });
     res.json(post);
 });
@@ -42,7 +49,11 @@ app.post('/posts', async (req, res) => {
 
 // PAGES
 app.get('/pages', async (req, res) => {
-    const pages = await prisma.page.findMany();
+    const pages = await prisma.page.findMany({
+        include: {
+            tags: true
+        },
+    });
     res.json(pages);
 })
 
@@ -51,6 +62,9 @@ app.get('/pages/:id', async (req, res) => {
 
     const page = await prisma.page.findUnique({
       where: { id: Number(id) },
+      include: {
+        tags: true,
+      }
     });
     res.json(page);
 })
